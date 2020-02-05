@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot
+	xmlns:xacro="http://www.ros.org/wiki/xacro"
+	name="open_base">
+
+	<xacro:include filename="$(find description)/macros/rim.xacro"/>
+
+	<link name="origin_link"/>
+	<link name="base_link">
+
+	<inertial>
+
+		<mass value="0.07862944645"/>
+		<inertia
+			ixx="0.00002035985530754"
+			ixy="0"
+			ixz="0"
+			iyy="0.00002035985530754"
+			iyz="0"
+			izz="0.00003945961663220"/>
+
+	</inertial>
+
+  <visual>
+    <geometry>
+      <box size="0.3 0.3 0.01"/>
+    </geometry>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <material name="red"/>
+  </visual>
+
+	<collision>
+
+		<geometry>
+
+      <box size="0.3 0.3 0.01"/>
+
+		</geometry>
+
+	</collision>
+
+	</link>
+	<joint
+		name="base_joint"
+		type="fixed">
+
+		<parent link="origin_link" />
+		<child link="base_link" />
+		<origin xyz="0 0 0"/>
+
+	</joint>
+	<xacro:rim_macro
+		name="left"
+		color="0.3 0 0"
+		xyz="0 0 0"
+		rpy="0 0 0"/>
+
+
+</robot>
