@@ -21,10 +21,10 @@
 
 			</inertial>
 			<visual>
-
+				<origin rpy="0 -${pi/2} 0" xyz="0 0 0"/>
 				<geometry>
 
-					<mesh filename="package://description/mesh/rubberwheel.stl"/>
+					<mesh filename="package://description/mesh/rubberwheel.stl" scale="0.001 0.001 0.001"/>
 
 				</geometry>
 				<material name="roller_material">
@@ -38,7 +38,7 @@
 
 				<geometry>
 
-					<mesh filename="package://description/mesh/rubberwheel.stl"/>
+					<mesh filename="package://description/mesh/rubberwheel.stl" scale="0.001 0.001 0.001"/>
 
 				</geometry>
 
