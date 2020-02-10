@@ -63,7 +63,7 @@
       <child link="front_left_motor"/>
       <origin rpy="0 1.570796 0.785398" xyz="0.07 0.07 -0.035" />
   </joint>
-
+	
 	<xacro:rim_macro
 			name="front_left"
 			color="1 1 1"
@@ -89,6 +89,7 @@
 		    <child link="front_right_motor"/>
 		    <origin rpy="0 1.570796 -0.785398" xyz="0.07 -0.07 -0.035" />
 		</joint>
+
 
 	<xacro:rim_macro
 			name="front_right"

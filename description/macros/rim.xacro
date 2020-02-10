@@ -69,19 +69,19 @@
 		parent="${name}"
 		name="back_right"
 		xyz="0 0.024 -0.0065"
-		rpy="0 -${pi/2} 0"/>
+		rpy="${pi} -${pi/2} 0"/>
 
 	<xacro:roller_macro
 		parent="${name}"
 		name="front_top_right"
 		xyz="-0.0141068 0.0194164 0.0065"
-		rpy="0 -${pi/2} ${pi/5}"/>
+		rpy="${pi} -${pi/2} ${pi/5}"/>
 
 <xacro:roller_macro
 	parent="${name}"
 	name="front_down_right"
 	xyz="0.0141068 0.0194164 0.0065"
-	rpy="0 -${pi/2} -${pi/5}"/>
+	rpy="${pi} -${pi/2} -${pi/5}"/>
 
 	<xacro:roller_macro
 		parent="${name}"
@@ -99,13 +99,13 @@
 		parent="${name}"
 		name="front_top_left"
 		xyz="-0.0228254 -0.0074164 0.0065"
-		rpy="0 -${pi/2} ${3*pi/5}"/>
+		rpy="${pi} -${pi/2} ${3*pi/5}"/>
 
 		<xacro:roller_macro
 			parent="${name}"
 			name="front_down_left"
 			xyz="0.0228254 -0.0074164 0.0065"
-			rpy="0 -${pi/2} -${3*pi/5}"/>
+			rpy="${pi} -${pi/2} -${3*pi/5}"/>
 
 		<xacro:roller_macro
 			parent="${name}"
