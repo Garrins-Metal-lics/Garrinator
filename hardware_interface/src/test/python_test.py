@@ -16,7 +16,7 @@ def transcriptor(rpmf,motor):
     veloc=(rpmf*cpr)/60;# compute the rev/s through  counts/s
     print("vel : ",veloc )
     cad= "v "+str(motor)+" "+str(veloc)+" \r\n"
-    cad=bytes(cad)
+    cad=bytes(cad,encoding='utf8')
     return cad
 
 
@@ -27,11 +27,10 @@ odrv0 = serial.Serial("/dev/ttyACM0",115200,timeout=1)# motors 1, 2
 
 
 #/-- main program --/
-# vars that will chose wich motor move and speed
-motor=0
 while True:
+    # vars that will chose wich motor move and speed
     rpm=int(input("entra rpm: "))
-
+    motor=int(input("motor 0 o 1: "))
     #/--
     vel=transcriptor(rpm,motor)# obtain the proper cad to send through serial
     print("final cad: ",vel)
