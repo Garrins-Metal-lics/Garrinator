@@ -37,8 +37,11 @@ def readmotor(motor):
     #listen the odrv back
     msg = odrv0.readline()
 
+    print("no decoded: ",msg)
     # process the info from the serial
     msg=msg.decode("utf-8")# decode
+    print("no decoded: ",msg)
+
     msg=str(msg)# string
     msg=msg.split()# parse the information [0]=counts [1]counts/s
     msg=msg[1].replace("'","")# clean the extra '
@@ -46,7 +49,7 @@ def readmotor(motor):
 
     #process the info and change counts/s --> rad/s
     data=(msg/cpr)*2*math.pi# data=rev/s
-    return msg
+    return data
 
 #/-- open Serial ports
 

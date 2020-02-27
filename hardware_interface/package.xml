@@ -10,7 +10,7 @@
 
   <url type="website">https://github.com/JavierRubia/Garrinator/tree/master/hardware_interface</url>
 
-  <author email="javier.rubia@uvic.cat">Javuer Rubia</author>
+  <author email="javier.rubia@uvic.cat">Javier Rubia</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
