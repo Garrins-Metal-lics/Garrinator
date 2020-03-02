@@ -8,18 +8,39 @@ project(garrinator_hardware_interface)
 add_definitions(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
-	roscpp)
+	roscpp
+	controller_manager
+	hardware_interface
+	combined_robot_hw
+	joint_limits_interface
+)
 
 catkin_package(
 	CATKIN_DEPENDS
-		roscpp)
+		roscpp
+		controller_manager
+		hardware_interface
+		combined_robot_hw
+		joint_limits_interface)
+
+
+include_directories(include
+	${catkin_INCLUDE_DIRS} )
+
 
 ###########
 ## Build ##
 ###########
 
-include_directories(include
-	${catkin_INCLUDE_DIRS} )
+add_executable(hw_if_test
+	src/test/hw_if_test.cpp
+	src/odrive_hw_if.cpp)
+add_dependencies(hw_if_test
+	${catkin_EXPORTED_TARGETS} )
+target_link_libraries(hw_if_test
+	${catkin_LIBRARIES} )
+
+
 add_executable(main_test
 	src/test/main_test.cpp )
 add_dependencies(main_test
