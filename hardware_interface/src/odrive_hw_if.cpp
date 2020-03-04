@@ -114,7 +114,7 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
 
 void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 {
-	int counts_to_rads=0;// factor that changes counts to rad/s
+	float counts_to_rads=2*PI/2048;// factor that changes counts to rad/s
 
 	//-- read first odrive
 	// read first wheel
@@ -128,14 +128,18 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
   } while(byte_!='\n');
 
 	// read_msg_ have position and speed of wheel 1
-	delimiter_ = "\t";
+	delimiter_ = " ";
 	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
 	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
 
 	// finished parse string
 	//upload information
-	positions_fb_[1]=std::atof(token_.c_str())*counts_to_rads;
-	velocities_fb_[1]=std::atof(read_msg_.c_str())*counts_to_rads;
+	to_rad_=std::atof(token_.c_str())*counts_to_rads;
+	to_rad_=(to_rad_ / (2*PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	positions_fb_[0]=to_rad_;
+
+	velocities_fb_[0]=std::atof(read_msg_.c_str())*counts_to_rads;
 
 	//--
 	// read second wheel
@@ -149,14 +153,18 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
   } while(byte_!='\n');
 
 	// read_msg_ have position and speed of wheel 1
-	delimiter_ = "\t";
+	delimiter_ = " ";
 	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
 	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
 
 	// finished parse string
 	//upload information
-	positions_fb_[2]=std::atof(token_.c_str())*counts_to_rads;
-	velocities_fb_[2]=std::atof(read_msg_.c_str())*counts_to_rads;
+
+	to_rad_=std::atof(token_.c_str())*counts_to_rads;
+	to_rad_=(to_rad_ / (2*PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	positions_fb_[1]=to_rad_;
+	velocities_fb_[1]=std::atof(read_msg_.c_str())*counts_to_rads;
 
 
 	//-- read second odrive
@@ -171,14 +179,17 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
   } while(byte_!='\n');
 
 	// read_msg_ have position and speed of wheel 1
-	delimiter_ = "\t";
+	delimiter_ = " ";
 	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
 	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
 
 	// finished parse string
 	//upload information
-	positions_fb_[3]=std::atof(token_.c_str())*counts_to_rads;
-	velocities_fb_[3]=std::atof(read_msg_.c_str())*counts_to_rads;
+	to_rad_=std::atof(token_.c_str())*counts_to_rads;
+	to_rad_=(to_rad_ / (2*PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	positions_fb_[2]=to_rad_;
+	velocities_fb_[2]=std::atof(read_msg_.c_str())*counts_to_rads;
 
 	//--
 	// read second wheel
@@ -192,20 +203,22 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
   } while(byte_!='\n');
 
 	// read_msg_ have position and speed of wheel 1
-	delimiter_ = "\t";
+	delimiter_ = " ";
 	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
 	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
 
 	// finished parse string
 	//upload information
-	positions_fb_[4]=std::atof(token_.c_str())*counts_to_rads;
-	velocities_fb_[4]=std::atof(read_msg_.c_str())*counts_to_rads;
-}
+	to_rad_=std::atof(token_.c_str())*counts_to_rads;
+	to_rad_=(to_rad_ / (2*PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	positions_fb_[3]=to_rad_;
+	velocities_fb_[3]=std::atof(read_msg_.c_str())*counts_to_rads;}
 
 
 void OdriveHwIf::write(const ros::Time& _time,const ros::Duration& _period )
 {
-	int rad_to_count=0;// factor that changes rad/s to counts
+	float rad_to_count=(2048)/(2*PI);// factor that changes rad/s to counts
 
 	//--write first odrive
 	//write first wheel speed

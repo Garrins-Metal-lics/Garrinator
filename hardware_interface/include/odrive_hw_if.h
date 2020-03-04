@@ -53,6 +53,10 @@ class OdriveHwIf: public hardware_interface::RobotHW
     std::vector<double> velocities_cmmd_;
     //unsigned char readByte(const int & _serial_id);
 
+    float to_rad_;
+    const double PI  =3.141592653589793238463;
+
+
 };
 
 
