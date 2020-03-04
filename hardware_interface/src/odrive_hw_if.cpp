@@ -1,5 +1,4 @@
 #include "odrive_hw_if.h"
-
 // blocking read of a single byte
 unsigned char readByte(int __serial_id)
 {
@@ -115,7 +114,10 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
 
 void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 {
-  //read whole string positions_fb_; velocities_fb_;
+	int counts_to_rads=0;// factor that changes counts to rad/s
+
+	//-- read first odrive
+	// read first wheel
   mensg_="f 0 \n";
   ::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
   read_msg_.erase();
@@ -124,10 +126,41 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
     read_msg_.push_back(byte_);
 
   } while(byte_!='\n');
-  std::cout << read_msg_ << std::endl<< std::endl;
-  // tratar cadenas y llenar los vectores
 
-  //read whole string positions_fb_; velocities_fb_;
+	// read_msg_ have position and speed of wheel 1
+	delimiter_ = "\t";
+	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
+	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
+
+	// finished parse string
+	//upload information
+	positions_fb_[1]=std::atof(token_.c_str())*counts_to_rads;
+	velocities_fb_[1]=std::atof(read_msg_.c_str())*counts_to_rads;
+
+	//--
+	// read second wheel
+  mensg_="f 1 \n";
+  ::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
+  read_msg_.erase();
+  do {
+    byte_=(readByte(serial_id_od1));
+    read_msg_.push_back(byte_);
+
+  } while(byte_!='\n');
+
+	// read_msg_ have position and speed of wheel 1
+	delimiter_ = "\t";
+	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
+	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
+
+	// finished parse string
+	//upload information
+	positions_fb_[2]=std::atof(token_.c_str())*counts_to_rads;
+	velocities_fb_[2]=std::atof(read_msg_.c_str())*counts_to_rads;
+
+
+	//-- read second odrive
+	// read first wheel
   mensg_="f 0 \n";
   ::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
   read_msg_.erase();
@@ -136,15 +169,61 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
     read_msg_.push_back(byte_);
 
   } while(byte_!='\n');
-  std::cout << read_msg_ << std::endl<< std::endl;
 
+	// read_msg_ have position and speed of wheel 1
+	delimiter_ = "\t";
+	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
+	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
+
+	// finished parse string
+	//upload information
+	positions_fb_[3]=std::atof(token_.c_str())*counts_to_rads;
+	velocities_fb_[3]=std::atof(read_msg_.c_str())*counts_to_rads;
+
+	//--
+	// read second wheel
+  mensg_="f 1 \n";
+  ::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
+  read_msg_.erase();
+  do {
+    byte_=(readByte(serial_id_od2));
+    read_msg_.push_back(byte_);
+
+  } while(byte_!='\n');
+
+	// read_msg_ have position and speed of wheel 1
+	delimiter_ = "\t";
+	token_ = read_msg_.substr(0, read_msg_.find(delimiter_));
+	read_msg_.erase(0, read_msg_.find(delimiter_)+delimiter_.length());
+
+	// finished parse string
+	//upload information
+	positions_fb_[4]=std::atof(token_.c_str())*counts_to_rads;
+	velocities_fb_[4]=std::atof(read_msg_.c_str())*counts_to_rads;
 }
 
 
 void OdriveHwIf::write(const ros::Time& _time,const ros::Duration& _period )
 {
-  mensg_="v 0 100 \n";
+	int rad_to_count=0;// factor that changes rad/s to counts
+
+	//--write first odrive
+	//write first wheel speed
+
+	mensg_="v 0 "+ std::to_string(velocities_cmmd_[1]*rad_to_count)+" \n";
   ::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
-// write each wheel its rad/s velocities_cmmd_;
+
+	//second wheel update
+	mensg_="v 1 "+ std::to_string(velocities_cmmd_[2]*rad_to_count)+" \n";
+	::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
+
+	//--write second odrive
+	//write first wheel speed
+	mensg_="v 0 "+ std::to_string(velocities_cmmd_[3]*rad_to_count)+" \n";
+	::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
+
+	//second wheel update
+	mensg_="v 1 "+ std::to_string(velocities_cmmd_[4]*rad_to_count)+" \n";
+	::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
 
 }

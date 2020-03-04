@@ -11,6 +11,8 @@
 
 #include <math.h>
 
+//--- new changes
+#include <vector>
 
 
 // constants
@@ -80,18 +82,25 @@ int main()
 	ii = 0;//reset byte counter
 
 	std::string mensg;
-	float vel=12343;
+	double vel=12343;
 	std::string read_msg;
 
 	unsigned char caracter;
 	std::string mystring;
 
+
+	std::vector<double> positions_fb_(4);
+	std::vector<double> velocities_fb_(4);
+	std::vector<double> velocities_cmmd_(4);
+	velocities_cmmd_[1]=vel;
 	//3. main loop. Syncs and read data
 	while (1)
 	{
 		//send speed
-		std::cout << "enter speed: \n";
-		std::cin >> mystring;
+		ii+=1;
+		std::cout << "iteration nº: "<< ii<< std::endl;
+
+		mystring=std::to_string(velocities_cmmd_[1]);
 		mensg="v 0 "+ mystring+" \n";
 		std::cout << mensg;
     write(serial_id,mensg.c_str(),mensg.size());// send the message
@@ -106,26 +115,24 @@ int main()
 			read_msg.push_back(caracter);
 
 		} while(caracter!='\n');
-		std::cout << read_msg << std::endl<< std::endl;
+		std::cout << read_msg ;
 
-/*
-		//check for sync
-		if (readByte(serial_id) == 0xFF)
-		{
-			//keep reading for data and store it in the buffer
-			for(ii=0; ii<BUFFER_SIZE; ii++) buffer[ii] = readByte(serial_id);
+		std::string delimiter = "\t";
+		std::string token = read_msg.substr(0, read_msg.find(delimiter));
+		read_msg.erase(0, read_msg.find(delimiter)+delimiter.length());
 
-			// when buffer is full, decode data
-			d0 = 0;
-			d1 = 0;
-			d0 = buffer[1] | buffer[0]<<6;
-			d1 = buffer[3] | buffer[2]<<6;
+		std::cout <<"first parse: "<< token << std::endl;
+		positions_fb_[1]=std::atof(token.c_str());
+		std::cout <<"updoad pos_vector: "<< positions_fb_[1] << std::endl;
 
-			// print data into the screen
-			std::cout << "encoder 0: " << d0 << std::endl;
-			std::cout << "encoder 1: " << d1 << std::endl << std::endl;
-		}*/
-		sleep(1);
+		/*std::string delimiter = "\n";
+		std::string token = read_msg.substr(0, read_msg.find(delimiter));*/
+		std::cout <<"Rest of it: "<< read_msg ;
+		velocities_fb_[1]=std::atof(read_msg.c_str());
+		std::cout <<"updoad vel_vector: "<< velocities_fb_[1] << std::endl<< std::endl;
+
+
+		sleep(0.5);
 
 
 	}

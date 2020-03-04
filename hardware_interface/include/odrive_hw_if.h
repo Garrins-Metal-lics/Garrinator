@@ -9,6 +9,7 @@
 #include <hardware_interface/joint_command_interface.h>
 
 #include <iostream>
+#include <vector>
 #include <termios.h>
 #include <sys/types.h>
 #include <sys/time.h>
@@ -18,7 +19,6 @@
 #include <unistd.h>
 #include <string>
 #include <math.h>
-
 
 class OdriveHwIf: public hardware_interface::RobotHW
 {
@@ -41,6 +41,8 @@ class OdriveHwIf: public hardware_interface::RobotHW
 
 
     std::string read_msg_;
+    std::string token_;
+    std::string delimiter_;
     std::string mensg_;// variable that will provide flexibility to the messages
     unsigned char byte_;
 
