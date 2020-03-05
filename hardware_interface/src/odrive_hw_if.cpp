@@ -1,22 +1,5 @@
 #include "odrive_hw_if.h"
 // blocking read of a single byte
-unsigned char readByte(int __serial_id)
-{
-	unsigned char byte;
-	fd_set fdSet;
-
-	//reconfigure fdSet for device entry
-	FD_ZERO (&fdSet);
-	FD_SET (__serial_id, &fdSet);
-
-	//blocking read, up to an input arrives to some channel at fdSet
-	select (__serial_id+1, &fdSet,NULL,NULL,NULL);
-
-	//reads 1 byte from device and return it
-	read(__serial_id,&byte,1);
-	return byte;
-}
-
 
 OdriveHwIf::OdriveHwIf()
 {
@@ -41,12 +24,13 @@ OdriveHwIf::~OdriveHwIf()
   ::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
   ::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
 
+	sleep(1);
 
   // close serials
   close(serial_id_od1);
   close(serial_id_od2);
   //close comms
-  tcsetattr( STDIN_FILENO, TCSANOW, &stdInOldSettings );
+  //tcsetattr( STDIN_FILENO, TCSANOW, &stdInOldSettings );
 }
 
 
@@ -58,7 +42,7 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
 	if ( serial_id_od1 < 0 )
 	{
 	        std::cout << "Error opening serial port: " << "/dev/ttyACM0" << std::endl;
-	        return -1;
+	        return false;
 	}
 
   //open serial 2
@@ -66,11 +50,8 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
   if ( serial_id_od2 < 0 )
   {
           std::cout << "Error opening serial port: " << "/dev/ttyACM1" << std::endl;
-          return -1;
+          return false;
   }
-
-
-
 	//2. configures serial comm's
 
   //configure comm 1
@@ -83,9 +64,8 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
 	if ( ret_value < 0 )
 	{
 	        std::cout << "Error configuring serial communications" << std::endl << std::endl;
-	        return -1;
+	        return false;
 	}
-
   //configure comm 2
 
   tcgetattr(serial_id_od2, &ttySettings_2);//gets current config
@@ -97,24 +77,37 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
   if ( ret_value < 0 )
   {
           std::cout << "Error configuring serial communications" << std::endl << std::endl;
-          return -1;
+          return false;
   }
 
 
 	//3. configure stdin
 	//Important! ( please see http://www.cplusplus.com/forum/general/5304/ )
-	tcgetattr( STDIN_FILENO, &stdInOldSettings );
+	/*tcgetattr( STDIN_FILENO, &stdInOldSettings );
 	stdInNewSettings = stdInOldSettings;
 	stdInNewSettings.c_lflag &= (~ICANON & ~ECHO);
-	tcsetattr( STDIN_FILENO, TCSANOW, &stdInNewSettings );
+	tcsetattr( STDIN_FILENO, TCSANOW, &stdInNewSettings );*/
 
+
+	//X4
+	hardware_interface::JointStateHandle wheel_1_s_handle("rim_front_left_joint",&positions_fb_[0],&velocities_fb_[0],&efforts_fb_[0]);
+	state_joint_interface_.registerHandle(wheel_1_s_handle);
+
+	hardware_interface::JointHandle wheel_1_v_handle(state_joint_interface_.getHandle("rim_front_left_joint"),&velocities_cmmd_[0]);
+	velocity_joint_interface_.registerHandle(wheel_1_v_handle);
+
+
+	registerInterface(&state_joint_interface_);
+	registerInterface(&velocity_joint_interface_);
+
+	return true;
 
 }
 
 
 void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 {
-	float counts_to_rads=2*PI/2048;// factor that changes counts to rad/s
+	float counts_to_rads=2*M_PI/2048;// factor that changes counts to rad/s
 
 	//-- read first odrive
 	// read first wheel
@@ -135,8 +128,8 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 	// finished parse string
 	//upload information
 	to_rad_=std::atof(token_.c_str())*counts_to_rads;
-	to_rad_=(to_rad_ / (2*PI));
-	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	to_rad_=(to_rad_ / (2*M_PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*M_PI);
 	positions_fb_[0]=to_rad_;
 
 	velocities_fb_[0]=std::atof(read_msg_.c_str())*counts_to_rads;
@@ -161,8 +154,8 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 	//upload information
 
 	to_rad_=std::atof(token_.c_str())*counts_to_rads;
-	to_rad_=(to_rad_ / (2*PI));
-	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	to_rad_=(to_rad_ / (2*M_PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*M_PI);
 	positions_fb_[1]=to_rad_;
 	velocities_fb_[1]=std::atof(read_msg_.c_str())*counts_to_rads;
 
@@ -186,8 +179,8 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 	// finished parse string
 	//upload information
 	to_rad_=std::atof(token_.c_str())*counts_to_rads;
-	to_rad_=(to_rad_ / (2*PI));
-	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	to_rad_=(to_rad_ / (2*M_PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*M_PI);
 	positions_fb_[2]=to_rad_;
 	velocities_fb_[2]=std::atof(read_msg_.c_str())*counts_to_rads;
 
@@ -210,33 +203,63 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 	// finished parse string
 	//upload information
 	to_rad_=std::atof(token_.c_str())*counts_to_rads;
-	to_rad_=(to_rad_ / (2*PI));
-	to_rad_=(to_rad_-trunc(to_rad_))*(2*PI);
+	to_rad_=(to_rad_ / (2*M_PI));
+	to_rad_=(to_rad_-trunc(to_rad_))*(2*M_PI);
 	positions_fb_[3]=to_rad_;
 	velocities_fb_[3]=std::atof(read_msg_.c_str())*counts_to_rads;}
 
 
 void OdriveHwIf::write(const ros::Time& _time,const ros::Duration& _period )
 {
-	float rad_to_count=(2048)/(2*PI);// factor that changes rad/s to counts
+	float rad_to_count=(2048)/(2*M_PI);// factor that changes rad/s to counts
 
 	//--write first odrive
 	//write first wheel speed
 
-	mensg_="v 0 "+ std::to_string(velocities_cmmd_[1]*rad_to_count)+" \n";
+	mensg_="v 0 "+ std::to_string(velocities_cmmd_[0]*rad_to_count)+" \n";
   ::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
 
 	//second wheel update
-	mensg_="v 1 "+ std::to_string(velocities_cmmd_[2]*rad_to_count)+" \n";
+	mensg_="v 1 "+ std::to_string(velocities_cmmd_[1]*rad_to_count)+" \n";
 	::write(serial_id_od1,mensg_.c_str(),mensg_.size());// send the message
 
 	//--write second odrive
 	//write first wheel speed
-	mensg_="v 0 "+ std::to_string(velocities_cmmd_[3]*rad_to_count)+" \n";
+	mensg_="v 0 "+ std::to_string(velocities_cmmd_[2]*rad_to_count)+" \n";
 	::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
 
 	//second wheel update
-	mensg_="v 1 "+ std::to_string(velocities_cmmd_[4]*rad_to_count)+" \n";
+	mensg_="v 1 "+ std::to_string(velocities_cmmd_[3]*rad_to_count)+" \n";
 	::write(serial_id_od2,mensg_.c_str(),mensg_.size());// send the message
 
 }
+
+
+unsigned char OdriveHwIf::readByte(const int & _serial_id)
+{
+	unsigned char byte;
+	fd_set fdSet;
+
+	//reconfigure fdSet for device entry
+	FD_ZERO (&fdSet);
+	FD_SET (_serial_id, &fdSet);
+
+	//blocking read, up to an input arrives to some channel at fdSet
+	select (_serial_id+1, &fdSet,NULL,NULL,NULL);
+
+	//reads 1 byte from device and return it
+	::read(_serial_id,&byte,1);
+	return byte;
+}
+
+void OdriveHwIf::print() const
+{
+	std::cout  <<"------------------------" <<std::endl;
+	for (size_t i = 0; i < 4; i++) {
+		std::cout << "wheel_" <<i<< " position: "<<positions_fb_[i]<<" rad"<<std::endl;
+		std::cout << "wheel_" <<i<< " velocity: "<<velocities_fb_[i]<<" rad/s"<<std::endl<<std::endl;
+	}
+
+}
+
+//PLUGINLIB_EXPORT_CLASS(OdriveHwIf,hardware_interface::RobotHW)
