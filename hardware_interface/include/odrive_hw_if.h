@@ -34,19 +34,18 @@ class OdriveHwIf: public hardware_interface::RobotHW
 
   protected:
     // ==================HOMEWORK===================
-    // modify variables names to --> var_ <--
     // Fixed port names to odrives
-    // 4X hardware_interface::JointStateHandle wheel_1
+    //omni4 controller
 
     hardware_interface::JointStateInterface  state_joint_interface_;
     hardware_interface::VelocityJointInterface  velocity_joint_interface_;
 
 
     // serial and comm related
-    int serial_id_od1, serial_id_od2;
-    int ret_value;//----
-    termios ttySettings_1, ttySettings_2; //termios variable to configure serial port
-    termios stdInOldSettings, stdInNewSettings;
+    int serial_id_od1_, serial_id_od2_;
+    int ret_value_;//----
+    termios ttySettings_1_, ttySettings_2_; //termios variable to configure serial port
+    //termios stdInOldSettings_, stdInNewSettings_;
 
     std::string read_msg_;
     std::string token_;//--
