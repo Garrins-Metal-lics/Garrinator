@@ -27,11 +27,10 @@ int main(int argc, char **argv)
     ds=ts-prev_ts;
     odrive.write(ts,ds);
     odrive.read(ts,ds);
+    cm.update(ts, ds);
     prev_ts=ts;
     odrive.print();
     sleep(1);
-
-
 
   }
   odrive.read(ts,ds);
