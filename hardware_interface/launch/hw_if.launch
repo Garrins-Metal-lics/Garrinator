@@ -11,7 +11,7 @@
 	<!-- hardware interface with motors -->
 	<node
 		pkg="garrinator_hardware_interface"
-		type="hw_if_test"
+		type="hw_if_node"
 		name="hw_if_node"
 		respawn="false"
 		output="screen">
