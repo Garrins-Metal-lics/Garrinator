@@ -4,7 +4,7 @@
 
 	<!-- robot description -->
 	<include file="$(find description)/launch/display.launch">
-		<arg name="joint_state_publisher" value="true" />
+		<arg name="joint_state_publisher" value="false" />
 		<arg name="joints_gui" value="false"/>
 	</include>
 
