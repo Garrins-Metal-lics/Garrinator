@@ -2,38 +2,34 @@
 
 namespace garrinator_hardware_interface
 {
-/*
+
 OdriveHwIf::OdriveHwIf()
-{
-}
-*/
-OdriveHwIf::~OdriveHwIf()
 {
 	positions_fb_.resize(4);
     velocities_fb_.resize(4);
     efforts_fb_.resize(4);
     velocities_cmmd_.resize(4);
+}
 
+OdriveHwIf::~OdriveHwIf()
+{
+	//stop motor 0 of each motor driver
+	mensg_="v 0 0 \n";
+	::write(serial_id_od1_,mensg_.c_str(),mensg_.size());// send the message
+	::write(serial_id_od2_,mensg_.c_str(),mensg_.size());// send the message
 
-  // stop wheels
-
-  //stop motor 0 of each motor driver
-  mensg_="v 0 0 \n";
-  ::write(serial_id_od1_,mensg_.c_str(),mensg_.size());// send the message
-  ::write(serial_id_od2_,mensg_.c_str(),mensg_.size());// send the message
-
-  //stop motor 1 of each motor driver
-  mensg_="v 1 0 \n";
-  ::write(serial_id_od1_,mensg_.c_str(),mensg_.size());// send the message
-  ::write(serial_id_od2_,mensg_.c_str(),mensg_.size());// send the message
+	//stop motor 1 of each motor driver
+	mensg_="v 1 0 \n";
+	::write(serial_id_od1_,mensg_.c_str(),mensg_.size());// send the message
+	::write(serial_id_od2_,mensg_.c_str(),mensg_.size());// send the message
 
 	sleep(1);
 
-  // close serials
-  close(serial_id_od1_);
-  close(serial_id_od2_);
-  //close comms
-  //tcsetattr( STDIN_FILENO, TCSANOW, &stdInOldSettings_ );
+	// close serials
+	close(serial_id_od1_);
+	close(serial_id_od2_);
+	//close comms
+	//tcsetattr( STDIN_FILENO, TCSANOW, &stdInOldSettings_ );
 }
 
 
@@ -277,5 +273,3 @@ void OdriveHwIf::print() const
 }
 
 } // end of namespace
-
-PLUGINLIB_EXPORT_CLASS(garrinator_hardware_interface::OdriveHwIf, hardware_interface::RobotHW)
