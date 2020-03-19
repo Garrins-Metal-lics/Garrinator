@@ -1,17 +1,20 @@
 #include "odrive_hw_if.h"
-// blocking read of a single byte
 
+namespace garrinator_hardware_interface
+{
+/*
 OdriveHwIf::OdriveHwIf()
 {
-  positions_fb_.resize(4);
-  velocities_fb_.resize(4);
-  efforts_fb_.resize(4);
-  velocities_cmmd_.resize(4);
 }
-
-
+*/
 OdriveHwIf::~OdriveHwIf()
 {
+	positions_fb_.resize(4);
+    velocities_fb_.resize(4);
+    efforts_fb_.resize(4);
+    velocities_cmmd_.resize(4);
+
+
   // stop wheels
 
   //stop motor 0 of each motor driver
@@ -88,32 +91,24 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
 	stdInNewSettings_.c_lflag &= (~ICANON & ~ECHO);
 	tcsetattr( STDIN_FILENO, TCSANOW, &stdInNewSettings_ );*/
 
-
-	//X4
+	//Feedback and command interfaces for each joint.
 	hardware_interface::JointStateHandle wheel_1_s_handle("rim_front_left_joint",&positions_fb_[0],&velocities_fb_[0],&efforts_fb_[0]);
 	state_joint_interface_.registerHandle(wheel_1_s_handle);
-
 	hardware_interface::JointHandle wheel_1_v_handle(state_joint_interface_.getHandle("rim_front_left_joint"),&velocities_cmmd_[0]);
 	velocity_joint_interface_.registerHandle(wheel_1_v_handle);
 
-
 	hardware_interface::JointStateHandle wheel_2_s_handle("rim_front_right_joint",&positions_fb_[1],&velocities_fb_[1],&efforts_fb_[1]);
 	state_joint_interface_.registerHandle(wheel_2_s_handle);
-
 	hardware_interface::JointHandle wheel_2_v_handle(state_joint_interface_.getHandle("rim_front_right_joint"),&velocities_cmmd_[1]);
 	velocity_joint_interface_.registerHandle(wheel_2_v_handle);
 
-
 	hardware_interface::JointStateHandle wheel_3_s_handle("rim_back_left_joint",&positions_fb_[2],&velocities_fb_[2],&efforts_fb_[2]);
 	state_joint_interface_.registerHandle(wheel_3_s_handle);
-
 	hardware_interface::JointHandle wheel_3_v_handle(state_joint_interface_.getHandle("rim_back_left_joint"),&velocities_cmmd_[2]);
 	velocity_joint_interface_.registerHandle(wheel_3_v_handle);
 
-
 	hardware_interface::JointStateHandle wheel_4_s_handle("rim_back_right_joint",&positions_fb_[3],&velocities_fb_[3],&efforts_fb_[3]);
 	state_joint_interface_.registerHandle(wheel_4_s_handle);
-
 	hardware_interface::JointHandle wheel_4_v_handle(state_joint_interface_.getHandle("rim_back_right_joint"),&velocities_cmmd_[3]);
 	velocity_joint_interface_.registerHandle(wheel_4_v_handle);
 
@@ -151,7 +146,6 @@ void OdriveHwIf::read(const ros::Time& _time,const ros::Duration& _period )
 	to_rad_=(to_rad_ / (2*M_PI));
 	to_rad_=(to_rad_-trunc(to_rad_))*(2*M_PI);
 	positions_fb_[0]=to_rad_;
-
 	velocities_fb_[0]=std::atof(read_msg_.c_str())*counts_to_rads;
 
 	//--
@@ -282,4 +276,6 @@ void OdriveHwIf::print() const
 
 }
 
-//PLUGINLIB_EXPORT_CLASS(OdriveHwIf,hardware_interface::RobotHW)
+} // end of namespace
+
+PLUGINLIB_EXPORT_CLASS(garrinator_hardware_interface::OdriveHwIf, hardware_interface::RobotHW)

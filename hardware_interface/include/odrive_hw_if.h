@@ -19,13 +19,16 @@
 #include <string>
 #include <math.h>
 
-class OdriveHwIf: public hardware_interface::RobotHW
+namespace garrinator_hardware_interface
+{
+
+class OdriveHwIf : public hardware_interface::RobotHW
 {
 
   public:
     std::vector<double> velocities_cmmd_;
 
-    OdriveHwIf();// vector.resize(4);
+    OdriveHwIf(){}// vector.resize(4);
     ~OdriveHwIf();// close serial + stop(velocitats)
     bool init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh);//open serial
     void read(const ros::Time& _time,const ros::Duration& _period );// tots i pujar a velocities i positions
@@ -62,6 +65,8 @@ class OdriveHwIf: public hardware_interface::RobotHW
     unsigned char readByte(const int & _serial_id);
 
 };
+
+}// end of namespace
 
 
 #endif

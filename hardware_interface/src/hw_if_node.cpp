@@ -3,7 +3,7 @@
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "odrive_hw_iface");
-  OdriveHwIf odrive;
+  garrinator_hardware_interface::OdriveHwIf odrive;
   ros::NodeHandle nh;
   ros::Time ts, prev_ts;
   ros::Duration ds;
@@ -25,9 +25,9 @@ int main(int argc, char **argv)
     }
     ts=ros::Time::now();
     ds=ts-prev_ts;
+	odrive.read(ts,ds);
+	cm.update(ts, ds);
     odrive.write(ts,ds);
-    odrive.read(ts,ds);
-    cm.update(ts, ds);
     prev_ts=ts;
     odrive.print();
     sleep(1);
