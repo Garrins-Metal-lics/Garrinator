@@ -19,7 +19,10 @@
 #include <string>
 #include <math.h>
 
-class OdriveHwIf: public hardware_interface::RobotHW
+namespace garrinator_hardware_interface
+{
+
+class OdriveHwIf : public hardware_interface::RobotHW
 {
 
   public:
@@ -42,7 +45,7 @@ class OdriveHwIf: public hardware_interface::RobotHW
 
 
     // serial and comm related
-    int serial_id_od1_, serial_id_od2_;
+    int serial_id_od0_, serial_id_od1_;
     int ret_value_;//----
     termios ttySettings_1_, ttySettings_2_; //termios variable to configure serial port
     //termios stdInOldSettings_, stdInNewSettings_;
@@ -62,6 +65,8 @@ class OdriveHwIf: public hardware_interface::RobotHW
     unsigned char readByte(const int & _serial_id);
 
 };
+
+}// end of namespace
 
 
 #endif
