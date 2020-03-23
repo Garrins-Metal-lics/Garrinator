@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	prev_ts=ros::Time::now();
 
 	int freq=10;//Hz of update rate
-  	for (size_t i = 0; i < 10*freq; i++)
+  	for (size_t i = 0; i < 300*freq; i++)
 	{
     	for (size_t j = 0; j < odrive.velocities_cmmd_.size(); j++)
 		{
