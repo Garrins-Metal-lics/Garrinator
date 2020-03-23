@@ -18,3 +18,8 @@ joint_state_controller:
       position: 0.0
       velocity: 0.0
       effort:   0.0
+    - name: 'roller_front_left_rim_front_left_joint'
+      position: 0.0
+      velocity: 0.0
+      effort:   0.0
+    
