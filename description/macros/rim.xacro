@@ -59,11 +59,11 @@
 				rpy="${rpy}"/>
 		</joint>
 
-		<xacro:roller_macro
-			parent="${name}"
-			name="front_left"
-			xyz="0 -0.024 0.0065"
-			rpy="0 -${pi/2} 0"/>
+	<xacro:roller_macro
+		parent="${name}"
+		name="front_left"
+		xyz="0 -0.024 0.0065"
+		rpy="0 -${pi/2} 0"/>
 
 	<xacro:roller_macro
 		parent="${name}"
@@ -88,6 +88,8 @@
 		name="back_top_left"
 		xyz="-0.0141068 -0.0194164 -0.0065"
 		rpy="0 -${pi/2} -${pi/5}"/>
+
+
 
 	<xacro:roller_macro
 		parent="${name}"
