@@ -23,12 +23,13 @@ int main(int argc, char **argv)
 
 	prev_ts=ros::Time::now();
 
-  	for (size_t i = 0; i < 10; i++)
+	int freq=10;//Hz of update rate
+  	for (size_t i = 0; i < 10*freq; i++)
 	{
     	for (size_t j = 0; j < odrive.velocities_cmmd_.size(); j++)
 		{
-        	odrive.velocities_cmmd_[j]=(i+1)*5;
-    	}
+        odrive.velocities_cmmd_[j]=4;
+    }
 		ts=ros::Time::now();
 		ds=ts-prev_ts;
 		odrive.read(ts,ds);
@@ -36,7 +37,7 @@ int main(int argc, char **argv)
 		odrive.write(ts,ds);
 		prev_ts=ts;
 		odrive.print();
-		sleep(1);
+		sleep(1/freq);
 	}
 
 	odrive.read(ts,ds);
