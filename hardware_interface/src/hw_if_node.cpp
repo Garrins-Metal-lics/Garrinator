@@ -23,10 +23,17 @@ int main(int argc, char **argv)
 
 	prev_ts=ros::Time::now();
 
+<<<<<<< Updated upstream
 	int freq=10;//Hz of update rate
   	for (size_t i = 0; i < 300*freq; i++)
 	{
     	for (size_t j = 0; j < odrive.velocities_cmmd_.size(); j++)
+=======
+	ros::Rate rate(10.0);
+	while (ros::ok);
+
+    /*
+>>>>>>> Stashed changes
 		{
         odrive.velocities_cmmd_[j]=4;
     }
@@ -37,6 +44,7 @@ int main(int argc, char **argv)
 		odrive.write(ts,ds);
 		prev_ts=ts;
 		odrive.print();
+<<<<<<< Updated upstream
 		sleep(1/freq);
 	}
 
@@ -44,4 +52,10 @@ int main(int argc, char **argv)
 	odrive.print();
 
   	return 1;
+=======
+		rate.sleep();
+	  }
+
+  	return 1;*/
+>>>>>>> Stashed changes
 }

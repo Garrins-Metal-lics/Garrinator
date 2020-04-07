@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(garrinator_hardware_interface)
 
+<<<<<<< Updated upstream
 add_definitions(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
@@ -57,3 +58,23 @@ add_dependencies(main_test
 	${catkin_EXPORTED_TARGETS} )
 target_link_libraries(main_test
 	${catkin_LIBRARIES} )
+=======
+find_package(catkin REQUIRED COMPONENTS
+  controller_interface
+  hardware_interface
+  pluginlib
+  roscpp
+)
+
+catkin_package(
+)
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
+
+## Declare a C++ library
+add_library(my_controller_lib src/omni_4_controller.cpp)
+
+target_link_libraries(my_controller_lib ${catkin_LIBRARIES})
+>>>>>>> Stashed changes
