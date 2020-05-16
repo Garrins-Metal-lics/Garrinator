@@ -64,7 +64,13 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 		hardware_interface::JointHandle joint_back_right_;
 
 		// kinematics
-		Eigen::Vector3d twist_; //[vx vy wz]^T
+		// TODO
+
+		//twist command RT buffer
+		realtime_tools::RealtimeBuffer<Eigen::Vector3d> command_buffer_;
+
+		//command twist callback
+		void commandTwistCallback(const geometry_msgs::Twist& _twist);
 
 };
 
