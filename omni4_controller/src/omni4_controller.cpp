@@ -1,18 +1,22 @@
-#include <controller_interface/controller.h>
-#include <pluginlib/class_list_macros.h>
-#include <hardware_interface/joint_command_interface.h>
-#include <std_msgs/Float64.h>
+#include "omni4_controller.h"
 
-bool Omni4Controller::init(hardware_interface::VelocityJointInterface* hw, ros::NodeHandle &n)
+namespace omni4_controller
 {
-/*    std::string front_left_rim;
-    if (!n.getParam("rim_front_left_joint", front_left_rim))
+
+bool Omni4Controller::init(hardware_interface::VelocityJointInterface* hw, ros::NodeHandle& root_nh, ros::NodeHandle& controller_nh)
+{
+	/*
+	// for each joint, get name and sets joint handle
+	std::string joint_name;
+    if (!n.getParam("rim_front_left_joint", joint_name))
     {
         ROS_ERROR("Could not find joint name");
         return false;
     }
-    joint_ = hw->getHandle(front_left_rim);  // throws on failure
-    command_ = joint_.getPosition();   // set the current joint goal to the current joint position
+    joint_front_left_ = hw->getHandle(joint_name);  // throws on failure
+
+	//initializes kinematics parae
+
 
     // Load gain using gains set on parameter server
     if (!n.getParam("gain", gain_))

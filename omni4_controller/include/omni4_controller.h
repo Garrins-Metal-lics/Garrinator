@@ -14,7 +14,6 @@
 #include <controller_interface/controller.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <realtime_tools/realtime_buffer.h>
-#include <urdf_geometry_parser/urdf_geometry_parser.h>
 #include <pluginlib/class_list_macros.hpp>
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Float64.h>
@@ -59,10 +58,10 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 		ros::Subscriber twist_subscriber_;
 
 		// wheel drive joints
-        hardware_interface::JointHandle joint_w1_;
-		hardware_interface::JointHandle joint_w2_;
-		hardware_interface::JointHandle joint_w3_;
-		hardware_interface::JointHandle joint_w4_;
+        hardware_interface::JointHandle joint_front_left_;
+		hardware_interface::JointHandle joint_front_right_;
+		hardware_interface::JointHandle joint_back_left_;
+		hardware_interface::JointHandle joint_back_right_;
 
 		// kinematics
 		Eigen::Vector3d twist_; //[vx vy wz]^T
