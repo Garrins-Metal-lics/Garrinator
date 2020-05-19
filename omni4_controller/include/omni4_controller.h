@@ -65,9 +65,10 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 
 		// kinematics
 		float_t L_;// L = distance between wheels in a square shaped base
+		float_t w_rad_;// wheel radius
 		Eigen::MatrixXd ik_;
 
-	
+
 
 
 

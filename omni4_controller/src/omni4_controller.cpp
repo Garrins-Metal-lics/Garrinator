@@ -47,7 +47,8 @@ bool Omni4Controller::init(hardware_interface::VelocityJointInterface* hw, ros::
 	1/sqrt(2) -1/sqrt(2) L/sqrt(2);];
 
 	*/
-	L_ = 0.3;
+	L_ = 0.3;//300x300mm
+	w_rad_=0.03;// 60 mm diameter wheel
 	ik_.resize(4,3);
 	ik_(0,0)=1/sqrt(2);  ik_(0,1)=1/sqrt(2) ; ik_(0,2)= L_/sqrt(2);
 	ik_(1,0)=-1/sqrt(2); ik_(1,1)= 1/sqrt(2); ik_(1,2)= L_/sqrt(2);
@@ -72,8 +73,11 @@ void Omni4Controller::update(const ros::Time& time, const ros::Duration& period)
 	twist = *(command_buffer_.readFromRT());
 
 	//Compute the inverse kinematics to obtain joint speeds
-	velocities=ik_*twist;
+	velocities=ik_*twist;// velocities in m/s
 
+
+	velocities=velocities/w_rad_;// m/s to rad/s 
+	//
 	w_fl=velocities(0);
 	w_fr=velocities(1);
 	w_br=velocities(2);
