@@ -58,19 +58,26 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 		ros::Subscriber twist_subscriber_;
 
 		// wheel drive joints
-        hardware_interface::JointHandle joint_front_left_;
+    hardware_interface::JointHandle joint_front_left_;
 		hardware_interface::JointHandle joint_front_right_;
 		hardware_interface::JointHandle joint_back_left_;
 		hardware_interface::JointHandle joint_back_right_;
 
 		// kinematics
-		// TODO
+		float_t L_;// L = distance between wheels in a square shaped base
+		Eigen::MatrixXd ik_;
+
+	
+
+
 
 		//twist command RT buffer
 		realtime_tools::RealtimeBuffer<Eigen::Vector3d> command_buffer_;
 
 		//command twist callback
 		void commandTwistCallback(const geometry_msgs::Twist& _twist);
+
+
 
 };
 
