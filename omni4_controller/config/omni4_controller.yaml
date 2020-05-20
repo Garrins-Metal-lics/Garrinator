@@ -1,0 +1,2 @@
+omni4_controller:
+  type : "omni4_controller/Omni4Controller"

@@ -9,6 +9,12 @@
 		<arg name="rviz" value="false"/>
 	</include>
 
+	<!-- Joystick/gamepad -->
+	<!-- to do -->
+
+	<!-- Teleop -->
+	<!-- to do -->
+
 	<!-- hardware interface with motors -->
 	<node
 		pkg="garrinator_hardware_interface"
@@ -19,14 +25,14 @@
 	</node>
 
 	<!-- read-only "controller" to have joint position feedback -->
-	<rosparam file="$(find garrinator_hardware_interface)/config/controllers.yaml" command="load"/>
+	<rosparam file="$(find omni4_controller)/config/omni4_controller.yaml" command="load"/>
 	<node
 		pkg="controller_manager"
 		type="spawner"
-		name="joint_state_controller"
+		name="omni4_controller"
 		respawn="false"
 		output="screen"
-		args="joint_state_controller">
+		args="omni4_controller">
 	</node>
 
 </launch>
