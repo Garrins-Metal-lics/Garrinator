@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(teleop_joy)
+project(garri_teleop)
 
 find_package(catkin REQUIRED COMPONENTS
   joy

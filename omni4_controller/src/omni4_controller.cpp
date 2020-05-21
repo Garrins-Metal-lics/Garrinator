@@ -57,9 +57,10 @@ bool Omni4Controller::init(hardware_interface::VelocityJointInterface* hw, ros::
 
 
     // Init twist subscriber
-	twist_subscriber_ = controller_nh.subscribe("cmd_vel", 1, &Omni4Controller::commandTwistCallback, this);
+	twist_subscriber_ = controller_nh.subscribe("robot/cmd_vel", 1, &Omni4Controller::commandTwistCallback, this);
 
 	// returns
+	ROS_INFO("omni4_controller loaded successfully");//DEBUG MESSAGE
     return true;
 }
 
@@ -76,7 +77,7 @@ void Omni4Controller::update(const ros::Time& time, const ros::Duration& period)
 	velocities=ik_*twist;// velocities in m/s
 
 
-	velocities=velocities/w_rad_;// m/s to rad/s 
+	velocities=velocities/w_rad_;// m/s to rad/s
 	//
 	w_fl=velocities(0);
 	w_fr=velocities(1);
@@ -89,6 +90,8 @@ void Omni4Controller::update(const ros::Time& time, const ros::Duration& period)
 	joint_front_right_.setCommand(w_fr);
 	joint_back_left_.setCommand(w_bl);
 	joint_back_right_.setCommand(w_br);
+
+	ROS_INFO("UPDATE EVENT!"); //DEBUG MESSAGE
 
 }
 
@@ -106,11 +109,14 @@ void Omni4Controller::starting(const ros::Time& time)
 
 void Omni4Controller::stopping(const ros::Time& time)
 {
+	ROS_INFO("Shutting down omni4_controller");//DEBUG MESSAGE
 	// set zero to all joints
 	joint_front_left_.setCommand(0);
 	joint_front_right_.setCommand(0);
 	joint_back_left_.setCommand(0);
 	joint_back_right_.setCommand(0);
+
+
 }
 
 void Omni4Controller::commandTwistCallback(const geometry_msgs::Twist& _twist)
@@ -120,3 +126,4 @@ void Omni4Controller::commandTwistCallback(const geometry_msgs::Twist& _twist)
 }
 
 }  // end of namespace
+PLUGINLIB_EXPORT_CLASS(omni4_controller::Omni4Controller, controller_interface::ControllerBase);

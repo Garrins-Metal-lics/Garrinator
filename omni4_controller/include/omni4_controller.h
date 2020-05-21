@@ -84,6 +84,5 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 
 } //end of namespace
 
-PLUGINLIB_EXPORT_CLASS(omni4_controller::Omni4Controller, controller_interface::ControllerBase);
 
 #endif

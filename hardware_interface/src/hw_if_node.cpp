@@ -27,10 +27,7 @@ int main(int argc, char **argv)
 	ros::Rate rate(10.0);//Hz of thread execution
 
 	// as the speed is no longer modified it is outside of the loop
-	for (size_t j = 0; j < odrive.velocities_cmmd_.size(); j++)
-	{
-		odrive.velocities_cmmd_[j]=0;
-	}
+
 	while (ros::ok)
 	{
 
@@ -40,7 +37,6 @@ int main(int argc, char **argv)
 		cm.update(ts, ds);
 		odrive.write(ts,ds);
 		prev_ts=ts;
-		odrive.print();
 		rate.sleep();
 	}
 
