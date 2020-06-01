@@ -126,4 +126,3 @@ void Omni4Controller::commandTwistCallback(const geometry_msgs::Twist& _twist)
 }
 
 }  // end of namespace
-PLUGINLIB_EXPORT_CLASS(omni4_controller::Omni4Controller, controller_interface::ControllerBase);

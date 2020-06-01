@@ -20,6 +20,7 @@
 
 namespace omni4_controller
 {
+
 class Omni4Controller : public controller_interface::Controller<hardware_interface::VelocityJointInterface>
 {
 	public:
@@ -58,7 +59,7 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 		ros::Subscriber twist_subscriber_;
 
 		// wheel drive joints
-    hardware_interface::JointHandle joint_front_left_;
+		hardware_interface::JointHandle joint_front_left_;
 		hardware_interface::JointHandle joint_front_right_;
 		hardware_interface::JointHandle joint_back_left_;
 		hardware_interface::JointHandle joint_back_right_;
@@ -68,21 +69,16 @@ class Omni4Controller : public controller_interface::Controller<hardware_interfa
 		float_t w_rad_;// wheel radius
 		Eigen::MatrixXd ik_;
 
-
-
-
-
 		//twist command RT buffer
 		realtime_tools::RealtimeBuffer<Eigen::Vector3d> command_buffer_;
 
 		//command twist callback
 		void commandTwistCallback(const geometry_msgs::Twist& _twist);
 
-
-
 };
 
 } //end of namespace
 
+PLUGINLIB_EXPORT_CLASS(omni4_controller::Omni4Controller, controller_interface::ControllerBase);
 
 #endif

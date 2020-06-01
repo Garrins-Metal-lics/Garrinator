@@ -1,4 +1,4 @@
-<library path="lib/libmy_controller_lib">
+<library path="lib/libomni4_controller">
 	<class 	name="omni4_controller/Omni4Controller"
 	     	type="omni4_controller::Omni4Controller"
 	     	base_class_type="controller_interface::ControllerBase">

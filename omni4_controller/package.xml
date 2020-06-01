@@ -8,7 +8,7 @@
   <license>BSD</license>
   <maintainer email="javier.rubia@uvic.cat">Javier Rubia</maintainer>
   <author email="javier.rubia@uvic.cat">Javier Rubia</author>
-  <author email="ancdreu@beta-robots.com">Andreu Corominas Murtra</author>
+  <author email="andreu@beta-robots.com">Andreu Corominas Murtra</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
