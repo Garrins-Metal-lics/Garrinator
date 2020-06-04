@@ -4,7 +4,6 @@
   <name>omni4_controller</name>
   <version>0.1.1</version>
   <description>Garrinator hw interface </description>
-
   <license>BSD</license>
   <maintainer email="javier.rubia@uvic.cat">Javier Rubia</maintainer>
   <author email="javier.rubia@uvic.cat">Javier Rubia</author>

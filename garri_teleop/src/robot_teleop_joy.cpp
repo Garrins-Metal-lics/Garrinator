@@ -13,7 +13,7 @@ private:
 
   ros::NodeHandle nh_;
 
-  int linear_, angular_;
+  int xlinear_,ylinear_, angular_;
   double l_scale_, a_scale_;
   ros::Publisher vel_pub_;
   ros::Subscriber joy_sub_;
@@ -22,12 +22,13 @@ private:
 
 
 TeleopRobot::TeleopRobot():
-  linear_(1),
+  xlinear_(1),
+  ylinear_(0),
   angular_(2)
 {
 
-  nh_.param("axis_linear", linear_, linear_);
-  nh_.param("axis_angular", angular_, angular_);
+  //nh_.param("axis_linear", linear_, linear_);
+  //nh_.param("axis_angular", angular_, angular_);
   nh_.param("scale_angular", a_scale_, a_scale_);
   nh_.param("scale_linear", l_scale_, l_scale_);
 
@@ -43,7 +44,8 @@ void TeleopRobot::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
   geometry_msgs::Twist twist;
   twist.angular.z = a_scale_*joy->axes[angular_];
-  twist.linear.x = l_scale_*joy->axes[linear_];
+  twist.linear.x = l_scale_*joy->axes[xlinear_];
+  twist.linear.y = l_scale_*joy->axes[ylinear_];
   vel_pub_.publish(twist);
 }
 

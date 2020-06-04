@@ -10,9 +10,9 @@
 	</include>
 
 	<!-- Joystick/gamepad -->
-	<include file="$(find garri_teleop)/launch/robot_joy.launch"/>
 	<!-- Teleop -->
-	<!-- to do -->
+	
+	<include file="$(find garri_teleop)/launch/robot_joy.launch"/>
 
 	<!-- hardware interface with motors -->
 	<node
