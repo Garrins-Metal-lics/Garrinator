@@ -23,25 +23,22 @@ int main(int argc, char **argv)
 
 	prev_ts=ros::Time::now();
 
-	int freq=10;//Hz of update rate
-  	for (size_t i = 0; i < 300*freq; i++)
+
+	ros::Rate rate(10.0);//Hz of thread execution
+
+	// as the speed is no longer modified it is outside of the loop
+
+	while (ros::ok)
 	{
-    	for (size_t j = 0; j < odrive.velocities_cmmd_.size(); j++)
-		{
-        odrive.velocities_cmmd_[j]=4;
-    }
+
 		ts=ros::Time::now();
 		ds=ts-prev_ts;
 		odrive.read(ts,ds);
 		cm.update(ts, ds);
 		odrive.write(ts,ds);
 		prev_ts=ts;
-		odrive.print();
-		sleep(1/freq);
+		rate.sleep();
 	}
 
-	odrive.read(ts,ds);
-	odrive.print();
-
-  	return 1;
+  return 1;
 }

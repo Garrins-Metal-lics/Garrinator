@@ -49,11 +49,3 @@ target_link_libraries(hw_if_node
 	${PROJECT_NAME}
 	${catkin_LIBRARIES}
 )
-
-
-add_executable(main_test
-	src/test/main_test.cpp )
-add_dependencies(main_test
-	${catkin_EXPORTED_TARGETS} )
-target_link_libraries(main_test
-	${catkin_LIBRARIES} )

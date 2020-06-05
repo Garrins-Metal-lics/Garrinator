@@ -6,8 +6,13 @@
 	<include file="$(find description)/launch/display.launch">
 		<arg name="joint_state_publisher" value="false" />
 		<arg name="joints_gui" value="false"/>
-		<arg name="rviz" value="false"/>
+		<arg name="rviz" value="true"/>
 	</include>
+
+	<!-- Joystick/gamepad -->
+	<!-- Teleop -->
+	<remap from="/robot/cmd_vel" to="/omni4_controller/robot/cmd_vel"/>
+	<include file="$(find garri_teleop)/launch/robot_joy.launch"/>
 
 	<!-- hardware interface with motors -->
 	<node
@@ -18,6 +23,8 @@
 		output="screen">
 	</node>
 
+
+
 	<!-- read-only "controller" to have joint position feedback -->
 	<rosparam file="$(find garrinator_hardware_interface)/config/controllers.yaml" command="load"/>
 	<node
@@ -27,6 +34,17 @@
 		respawn="false"
 		output="screen"
 		args="joint_state_controller">
+	</node>
+
+	<!-- Vehicle kinematics -->
+	<rosparam file="$(find omni4_controller)/config/omni4_controller.yaml" command="load"/>
+	<node
+		pkg="controller_manager"
+		type="spawner"
+		name="omni4_controller"
+		respawn="false"
+		output="screen"
+		args="omni4_controller">
 	</node>
 
 </launch>
