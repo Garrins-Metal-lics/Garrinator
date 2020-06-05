@@ -11,7 +11,7 @@
 
 	<!-- Joystick/gamepad -->
 	<!-- Teleop -->
-	
+	<remap from="/robot/cmd_vel" to="/omni4_controller/robot/cmd_vel"/>
 	<include file="$(find garri_teleop)/launch/robot_joy.launch"/>
 
 	<!-- hardware interface with motors -->
