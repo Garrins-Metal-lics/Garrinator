@@ -24,8 +24,9 @@ namespace omni4_controller
 class Omni4Controller : public controller_interface::Controller<hardware_interface::VelocityJointInterface>
 {
 	public:
-		Omni4Controller();
-		~Omni4Controller();
+		// constructor and destructor. Nothing to do
+		Omni4Controller(){};
+		~Omni4Controller(){};
 
 		/**
 		* \brief Initialize controller
