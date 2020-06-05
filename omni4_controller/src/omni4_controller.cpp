@@ -91,7 +91,6 @@ void Omni4Controller::update(const ros::Time& time, const ros::Duration& period)
 	joint_back_left_.setCommand(w_bl);
 	joint_back_right_.setCommand(w_br);
 
-	ROS_INFO("UPDATE EVENT!"); //DEBUG MESSAGE
 
 }
 
