@@ -88,14 +88,14 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
 	tcsetattr( STDIN_FILENO, TCSANOW, &stdInNewSettings_ );*/
 
 	//Feedback and command interfaces for each joint.
-	hardware_interface::JointStateHandle wheel_1_s_handle("rim_front_left_joint",&positions_fb_[0],&velocities_fb_[0],&efforts_fb_[0]);
+	hardware_interface::JointStateHandle wheel_1_s_handle("rim_front_right_joint",&positions_fb_[0],&velocities_fb_[0],&efforts_fb_[0]);
 	state_joint_interface_.registerHandle(wheel_1_s_handle);
-	hardware_interface::JointHandle wheel_1_v_handle(state_joint_interface_.getHandle("rim_front_left_joint"),&velocities_cmmd_[0]);
+	hardware_interface::JointHandle wheel_1_v_handle(state_joint_interface_.getHandle("rim_front_right_joint"),&velocities_cmmd_[0]);
 	velocity_joint_interface_.registerHandle(wheel_1_v_handle);
 
-	hardware_interface::JointStateHandle wheel_2_s_handle("rim_front_right_joint",&positions_fb_[1],&velocities_fb_[1],&efforts_fb_[1]);
+	hardware_interface::JointStateHandle wheel_2_s_handle("rim_front_left_joint",&positions_fb_[1],&velocities_fb_[1],&efforts_fb_[1]);
 	state_joint_interface_.registerHandle(wheel_2_s_handle);
-	hardware_interface::JointHandle wheel_2_v_handle(state_joint_interface_.getHandle("rim_front_right_joint"),&velocities_cmmd_[1]);
+	hardware_interface::JointHandle wheel_2_v_handle(state_joint_interface_.getHandle("rim_front_left_joint"),&velocities_cmmd_[1]);
 	velocity_joint_interface_.registerHandle(wheel_2_v_handle);
 
 	hardware_interface::JointStateHandle wheel_3_s_handle("rim_back_left_joint",&positions_fb_[2],&velocities_fb_[2],&efforts_fb_[2]);

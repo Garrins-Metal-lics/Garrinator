@@ -49,11 +49,12 @@ bool Omni4Controller::init(hardware_interface::VelocityJointInterface* hw, ros::
 	*/
 	L_ = 0.3;//300x300mm
 	w_rad_=0.03;// 60 mm diameter wheel
+	float_t sqrt_2=sqrt(2);
 	ik_.resize(4,3);
-	ik_(0,0)=1/sqrt(2);  ik_(0,1)=1/sqrt(2) ; ik_(0,2)= L_/sqrt(2);
-	ik_(1,0)=-1/sqrt(2); ik_(1,1)= 1/sqrt(2); ik_(1,2)= L_/sqrt(2);
-	ik_(2,0)=-1/sqrt(2); ik_(2,1)=-1/sqrt(2); ik_(2,2)= L_/sqrt(2);
-	ik_(3,0)=1/sqrt(2);  ik_(3,1)=-1/sqrt(2); ik_(3,2)= L_/sqrt(2);
+	ik_(0,0)=1/sqrt_2;  ik_(0,1)=1/sqrt_2 ; ik_(0,2)= L_/sqrt_2;
+	ik_(1,0)=-1/sqrt_2; ik_(1,1)= 1/sqrt_2; ik_(1,2)= L_/sqrt_2;
+	ik_(2,0)=-1/sqrt_2; ik_(2,1)=-1/sqrt_2; ik_(2,2)= L_/sqrt_2;
+	ik_(3,0)=1/sqrt_2;  ik_(3,1)=-1/sqrt_2; ik_(3,2)= L_/sqrt_2;
 
 
     // Init twist subscriber

@@ -44,7 +44,7 @@ void TeleopRobot::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
   geometry_msgs::Twist twist;
   twist.angular.z = a_scale_*joy->axes[angular_];
-  twist.linear.x = l_scale_*joy->axes[xlinear_];
+  twist.linear.x = -1*l_scale_*joy->axes[xlinear_];
   twist.linear.y = l_scale_*joy->axes[ylinear_];
   vel_pub_.publish(twist);
 }
