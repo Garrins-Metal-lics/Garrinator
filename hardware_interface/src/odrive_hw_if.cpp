@@ -40,6 +40,7 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
   serial_id_od0_ = open("/dev/odrive_0", O_RDWR | O_NOCTTY | O_NONBLOCK);
 	if ( serial_id_od0_ < 0 )
 	{
+					printf("Error %i from open: %s\n", errno, strerror(errno));
 	        std::cout << "Error opening serial port: " << "/dev/ttyACM0" << std::endl;
 	        return false;
 	}
@@ -48,6 +49,7 @@ bool OdriveHwIf::init(ros::NodeHandle& _root_nh,ros::NodeHandle& _robot_hw_nh)
   serial_id_od1_ = open("/dev/odrive_1", O_RDWR | O_NOCTTY | O_NONBLOCK);
   if ( serial_id_od1_ < 0 )
   {
+					printf("Error %i from open: %s\n", errno, strerror(errno));
           std::cout << "Error opening serial port: " << "/dev/ttyACM1" << std::endl;
           return false;
   }
